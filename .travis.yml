@@ -1,0 +1,22 @@
+sudo: required
+services: 
+  - docker
+
+before install:
+  - docker build -t craigcliff/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true craigcliff/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t craigcliff/multi-client ./client
+  - docker build -t craigcliff/multi-nginx ./nginx
+  - docker build -t craigcliff/multi-server ./server
+  - docker build -t craigcliff/multi-worker ./worker
+# Log in to Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take images and push to Docker Hub
+  - docker push craigcliff/multi-client
+  - docker push craigcliff/multi-nginx
+  - docker push craigcliff/multi-server
+  - docker push craigcliff/multi-worker
