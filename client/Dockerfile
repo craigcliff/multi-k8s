@@ -12,7 +12,7 @@ RUN npm install
 
 COPY --chown=node:node ./ ./
 
-RUN npm run build
+CMD ["npm", "run", "build"]
 FROM nginx
 EXPOSE 3000
 COPY --chown=node:node ./nginx/default.conf /etc/nginx/conf.d/default.conf
