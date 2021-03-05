@@ -12,7 +12,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   tls:
-    - host:
+    - hosts:
         - lefty23.co.za
         - www.lefty23.co.za
       secretName: k8s-lefty23-coza-tls
